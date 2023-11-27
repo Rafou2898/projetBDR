@@ -1,0 +1,90 @@
+@startuml
+'https://plantuml.com/class-diagram
+hide circle
+skinparam fixCircleLabelOverlapping true
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+class Personnage extends Entite {
+name
+
+}
+
+class Monstre extends Entite {
+}
+
+class typeMonstre {
+{static} name
+
+}
+class Inventaire {
+{static} id
+tailleMax
+
+}
+
+
+
+
+class Objet {
+{static} id
+nom
+description
+}
+
+class Classe {
+{static} id
+nom
+
+}
+
+class Sort {
+{static} nom
+description
+puissance
+degatTerre
+degatFeu
+degatEau
+degatAir
+
+}
+
+
+class Ressource extends Objet {
+}
+
+class Consommable extends Objet  {
+
+}
+
+class Equipement extends Objet {
+}
+
+
+
+
+class Entite {
+{static} id
+name
+hp
+exp
+force
+intelligence
+chance
+agilite
+}
+
+class Possession {
+quantite
+}
+Personnage "1"--"1"Inventaire : Possede
+
+Inventaire "1"---"*" Objet
+(Inventaire, Objet) -- Possession
+
+
+Personnage "*" -- "1" Classe : appartient
+Classe "1" -- "*" Sort : maitrise
+
+Personnage "1"--"1" Equipement : Equipe
+
+@enduml
