@@ -32,7 +32,6 @@ CREATE TABLE IF NOT EXISTS RPG.Archétypes (
   nom VARCHAR(45) NULL,
   Sorts_idSorts INT NOT NULL,
   PRIMARY KEY (idArchétypes),
-  INDEX fk_Archétypes_Sorts1_idx (Sorts_idSorts ) ,
   CONSTRAINT fk_Archétypes_Sorts1
     FOREIGN KEY (Sorts_idSorts)
     REFERENCES RPG.Sorts (idSorts)
@@ -56,7 +55,6 @@ CREATE TABLE IF NOT EXISTS RPG.Objets (
 CREATE TABLE IF NOT EXISTS RPG.Consommables (
   FK_Objets SERIAL,
   hp INT NULL,
-  INDEX fk_Consommables_Objets1_idx (FK_Objets ) ,
   PRIMARY KEY (FK_Objets),
   CONSTRAINT fk_Consommables_Objets1
     FOREIGN KEY (FK_Objets)
@@ -72,7 +70,6 @@ CREATE TABLE IF NOT EXISTS RPG.Recettes (
   idRecettes SERIAL,
   Consommables_FK_Objets INT NOT NULL,
   PRIMARY KEY (idRecettes),
-  INDEX fk_Recettes_Consommables1_idx (Consommables_FK_Objets ) ,
   CONSTRAINT fk_Recettes_Consommables1
     FOREIGN KEY (Consommables_FK_Objets)
     REFERENCES RPG.Consommables (FK_Objets)
@@ -88,7 +85,6 @@ CREATE TABLE IF NOT EXISTS RPG.Metiers (
   nom VARCHAR(45) NULL,
   Recettes_idRecettes INT NOT NULL,
   PRIMARY KEY (idMetiers),
-  INDEX fk_Metiers_Recettes1_idx (Recettes_idRecettes ) ,
   CONSTRAINT fk_Metiers_Recettes1
     FOREIGN KEY (Recettes_idRecettes)
     REFERENCES RPG.Recettes (idRecettes)
@@ -112,9 +108,6 @@ CREATE TABLE IF NOT EXISTS RPG.Personnages (
   FK_Archetypes INT NOT NULL,
   FK_Metier INT NOT NULL,
   PRIMARY KEY (idPersonnages),
-  INDEX fk_Personnages_Inventaires_idx (FK_Inventaire ) ,
-  INDEX fk_Personnages_Archétypes1_idx (FK_Archetypes ) ,
-  INDEX fk_Personnages_Metiers1_idx (FK_Metier ) ,
   CONSTRAINT fk_Personnages_Inventaires
     FOREIGN KEY (FK_Inventaire)
     REFERENCES RPG.Inventaire (idInventaires)
@@ -142,7 +135,6 @@ CREATE TABLE IF NOT EXISTS RPG.Equipements (
   force INT NULL,
   dex INT NULL,
   intel INT NULL,
-  INDEX fk_Equipements_Objets1_idx (FK_Objets ) ,
   PRIMARY KEY (FK_Objets),
   CONSTRAINT fk_Equipements_Objets1
     FOREIGN KEY (FK_Objets)
@@ -160,8 +152,6 @@ CREATE TABLE IF NOT EXISTS RPG.Slots (
   FK_Personnage INT NOT NULL,
   FK_Equipements INT NOT NULL,
   PRIMARY KEY (idSlots),
-  INDEX fk_Slots_Personnages1_idx (FK_Personnage ) ,
-  INDEX fk_Slots_Equipements1_idx (FK_Equipements ) ,
   CONSTRAINT fk_Slots_Personnages1
     FOREIGN KEY (FK_Personnage)
     REFERENCES RPG.Personnages (idPersonnages)
@@ -179,7 +169,6 @@ CREATE TABLE IF NOT EXISTS RPG.Slots (
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS RPG.Ressources (
   FK_Objets INT NOT NULL,
-  INDEX fk_Ressources_Objets1_idx (FK_Objets ) ,
   PRIMARY KEY (FK_Objets),
   CONSTRAINT fk_Ressources_Objets1
     FOREIGN KEY (FK_Objets)
@@ -196,8 +185,6 @@ CREATE TABLE IF NOT EXISTS RPG.EstDansInventaire (
   Objets_idObjets INT NOT NULL,
   Inventaires_idInventaires INT NOT NULL,
   PRIMARY KEY (idEstDansInventaire),
-  INDEX fk_EstDansInventaire_Objets1_idx (Objets_idObjets ) ,
-  INDEX fk_EstDansInventaire_Inventaires1_idx (Inventaires_idInventaires ) ,
   CONSTRAINT fk_EstDansInventaire_Objets1
     FOREIGN KEY (Objets_idObjets)
     REFERENCES RPG.Objets (idObjets)
@@ -217,8 +204,6 @@ CREATE TABLE IF NOT EXISTS RPG.Ressources_has_Recettes (
   Ressources_FK_Objets SERIAL,
   Recettes_idRecettes INT NOT NULL,
   PRIMARY KEY (Ressources_FK_Objets, Recettes_idRecettes),
-  INDEX fk_Ressources_has_Recettes_Recettes1_idx (Recettes_idRecettes ) ,
-  INDEX fk_Ressources_has_Recettes_Ressources1_idx (Ressources_FK_Objets ) ,
   CONSTRAINT fk_Ressources_has_Recettes_Ressources1
     FOREIGN KEY (Ressources_FK_Objets)
     REFERENCES RPG.Ressources (FK_Objets)
