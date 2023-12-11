@@ -21,22 +21,23 @@ CREATE TABLE IF NOT EXISTS RPG.Sorts (
   type VARCHAR(45) NULL,
   nom VARCHAR(45) NULL,
   degat INT NULL,
-  PRIMARY KEY (idSorts));
-
-
--- -----------------------------------------------------
--- Table RPG.Archétypes
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS RPG.Archétypes (
-  idArchétypes SERIAL,
-  nom VARCHAR(45) NULL,
-  Sorts_idSorts INT NOT NULL,
-  PRIMARY KEY (idArchétypes),
-  CONSTRAINT fk_Archétypes_Sorts1
-    FOREIGN KEY (Sorts_idSorts)
-    REFERENCES RPG.Sorts (idSorts)
+  Archetypes_idArchetypes INT NOT NULL,
+  PRIMARY KEY (idSorts),
+  CONSTRAINT fk_Sorts_Archetypes1,
+    FOREIGN KEY (Archetypes_idArchetypes)
+    REFERENCES RPG.Archetypes (idArchetypes)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
+
+
+-- -----------------------------------------------------
+-- Table RPG.Archetypes
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS RPG.Archetypes (
+  idArchetypes SERIAL,
+  nom VARCHAR(45) NULL,
+  Sorts_idSorts INT NOT NULL,
+  PRIMARY KEY (idArchetypes));
 
 
 -- -----------------------------------------------------
@@ -113,9 +114,9 @@ CREATE TABLE IF NOT EXISTS RPG.Personnages (
     REFERENCES RPG.Inventaire (idInventaires)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT fk_Personnages_Archétypes1
+  CONSTRAINT fk_Personnages_Archetypes1
     FOREIGN KEY (FK_Archetypes)
-    REFERENCES RPG.Archétypes (idArchétypes)
+    REFERENCES RPG.Archetypes (idArchetypes)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT fk_Personnages_Metiers1
