@@ -21,10 +21,10 @@ CREATE TABLE IF NOT EXISTS RPG.Sorts (
   type VARCHAR(45) NULL,
   nom VARCHAR(45) NULL,
   degat INT NULL,
-  Archetypes_idArchetypes INT NOT NULL,
+  FK_Archetypes_idArchetypes INT NOT NULL,
   PRIMARY KEY (idSorts),
   CONSTRAINT fk_Sorts_Archetypes1
-    FOREIGN KEY (Archetypes_idArchetypes)
+    FOREIGN KEY (FK_Archetypes_idArchetypes)
     REFERENCES RPG.Archetypes (idArchetypes)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS RPG.Objets (
 -- Table RPG.Consommables
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS RPG.Consommables (
-  FK_Objets SERIAL,
+  FK_Objets INT NOT NULL,
   hp INT NULL,
   PRIMARY KEY (FK_Objets),
   CONSTRAINT fk_Consommables_Objets1
@@ -129,7 +129,7 @@ CREATE TABLE IF NOT EXISTS RPG.Personnages (
 -- Table RPG.Equipements
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS RPG.Equipements (
-  FK_Objets SERIAL,
+  FK_Objets INT NOT NULL,
   type_equipement VARCHAR(45) NULL,
   hp INT NULL,
   force INT NULL,
