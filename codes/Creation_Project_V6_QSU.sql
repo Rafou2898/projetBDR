@@ -182,7 +182,7 @@ CREATE TABLE IF NOT EXISTS RPG.Ressources (
 CREATE TABLE IF NOT EXISTS RPG.EstDansInventaire (
   idEstDansInventaire SERIAL,
   Objets_idObjets INT NOT NULL,
-  fk_Inventaires_idInventaires INT NOT NULL,
+  Inventaires_idInventaires INT NOT NULL,
   PRIMARY KEY (idEstDansInventaire),
   CONSTRAINT fk_EstDansInventaire_Objets1
     FOREIGN KEY (Objets_idObjets)
