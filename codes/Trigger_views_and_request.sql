@@ -43,7 +43,7 @@ $$ language 'plpgsql';
 SELECT * FROM character_slot(2);
 
 ------------------------------------------------------------------------------------------------------------------------
---TODO: doesn't work yet
+--FIXME: doesn't work yet
 --Function to create a new inventory for a new character
 create or replace function before_insert_character()
     returns trigger as
@@ -70,6 +70,79 @@ insert into personnages (nom, hp, exp, argent, force, dex, intel,  fk_archetypes
 INSERT INTO estdansinventaire(objets_idobjets, inventaires_idinventaires) VALUES
 (300, 2),
 (300, 2);
+
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+--Function to add an equipement in a slot
+CREATE OR REPLACE FUNCTION update_character_stats()
+RETURNS TRIGGER AS $$
+    DECLARE
+    new_hp INT;
+    new_dex INT;
+    new_force INT;
+    new_intel INT;
+BEGIN
+    SELECT hp, force, dex, intel
+    INTO new_hp, new_force, new_dex, new_intel
+    FROM equipements
+    WHERE fk_objets = NEW.fk_equipements;
+
+    UPDATE personnages
+    SET hp = hp + new_hp,
+        force = force + new_force,
+        dex = dex + new_dex,
+        intel = intel + new_intel
+    WHERE idpersonnages = NEW.fk_personnage;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE 'plpgsql';
+
+--Trigger to update the stats of the character when we add an equipement in a slot
+CREATE TRIGGER update_character_stats_trigger
+BEFORE INSERT OR UPDATE ON slots
+FOR EACH ROW
+EXECUTE FUNCTION update_character_stats();
+
+--FIXME: Etrange d'ajouter dans le slot, le type d'equipement étant donné qu'en plus on peu le recuperr avec le  fk_equipements
+-- parce que sinon je pourrais mettre n'importe quoi comme nom
+insert into slots (type_equipement,fk_personnage, fk_equipements ) values ('Amulette',2, 103);
+------------------------------------------------------------------------------------------------------------------------
+--Function to update the stats of the character when we remove an equipement from a slot
+CREATE OR REPLACE FUNCTION update_character_stats_on_remove()
+RETURNS TRIGGER AS $$
+DECLARE
+    removed_hp INT;
+    removed_dex INT;
+    removed_force INT;
+    removed_intel INT;
+BEGIN
+
+    SELECT hp, force, dex, intel
+    INTO removed_hp, removed_force, removed_dex, removed_intel
+    FROM equipements
+    WHERE fk_objets = OLD.fk_equipements;
+
+    UPDATE personnages
+    SET hp = hp - removed_hp,
+        force = force - removed_force,
+        dex = dex - removed_dex,
+        intel = intel - removed_intel
+    WHERE idpersonnages = OLD.fk_personnage;
+
+    RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+--Trigger to update the stats of the character when we remove an equipement from a slot
+CREATE TRIGGER update_character_stats_on_remove_trigger
+BEFORE DELETE ON slots
+FOR EACH ROW
+EXECUTE FUNCTION update_character_stats_on_remove();
+
+--FIXME: Etrange car quand on supprimer un élément et on rajoute un autre, l'id dans le slot est incrémenté mais du coup
+-- on a des sauts d'id, Est-ce normal ?
+--Delete an equipement from a slot
+--Delete from slots where type_equipement = 'Amulette' and fk_personnage = 2;
 
 ------------------------------------------------------------------------------------------------------------------------
 
