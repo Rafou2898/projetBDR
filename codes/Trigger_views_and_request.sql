@@ -145,4 +145,9 @@ EXECUTE FUNCTION update_character_stats_on_remove();
 --Delete from slots where type_equipement = 'Amulette' and fk_personnage = 2;
 
 ------------------------------------------------------------------------------------------------------------------------
+--Request to see the stats of a character
+SELECT nom, hp, force, dex, intel
+    from personnages
+    where idpersonnages = 2;
 
+------------------------------------------------------------------------------------------------------------------------
