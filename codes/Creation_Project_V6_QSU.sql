@@ -20,6 +20,7 @@ CREATE TABLE IF NOT EXISTS RPG.Inventaire (
 CREATE TABLE IF NOT EXISTS RPG.Archetypes (
   idArchetypes SERIAL,
   nom VARCHAR(45) NULL,
+  archetype_image TEXT,
   PRIMARY KEY (idArchetypes));
 
 -- -----------------------------------------------------
@@ -45,6 +46,7 @@ CREATE TABLE IF NOT EXISTS RPG.Objets (
   idObjets INT NOT NULL,
   nom VARCHAR(45) NULL,
   type VARCHAR(45) NULL,
+  prix INT NULL,
   PRIMARY KEY (idObjets));
 
 
@@ -134,6 +136,7 @@ CREATE TABLE IF NOT EXISTS RPG.Equipements (
   force INT NULL,
   dex INT NULL,
   intel INT NULL,
+  level INT NULL,
   PRIMARY KEY (FK_Objets),
   CONSTRAINT fk_Equipements_Objets1
     FOREIGN KEY (FK_Objets)
