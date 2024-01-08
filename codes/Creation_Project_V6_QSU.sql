@@ -31,6 +31,7 @@ CREATE TABLE IF NOT EXISTS RPG.Sorts (
   type VARCHAR(45) NULL,
   nom VARCHAR(45) NULL,
   degat INT NULL,
+  sort_image TEXT,
   FK_Archetypes_idArchetypes INT NOT NULL,
   PRIMARY KEY (idSorts),
   CONSTRAINT fk_Sorts_Archetypes1
@@ -47,6 +48,7 @@ CREATE TABLE IF NOT EXISTS RPG.Objets (
   nom VARCHAR(45) NULL,
   type VARCHAR(45) NULL,
   prix INT NULL,
+  objet_image TEXT,
   PRIMARY KEY (idObjets));
 
 
